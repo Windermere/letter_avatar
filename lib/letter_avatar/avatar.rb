@@ -1,5 +1,7 @@
 module LetterAvatar
   class Avatar
+    require 'fileutils'
+
     # BUMP UP if avatar algorithm changes
     VERSION = 2
 
@@ -11,6 +13,8 @@ module LetterAvatar
 
     FONT_FILENAME = File.join(File.expand_path('../../', File.dirname(__FILE__)), 'Roboto-Medium')
 
+    MASK_FILENAME = File.join(File.expand_path('../../', File.dirname(__FILE__)), 'mask.png')
+
     class << self
       class Identity
         attr_accessor :color, :letter
@@ -18,7 +22,12 @@ module LetterAvatar
         def self.from_username(username)
           identity = new
           identity.color = LetterAvatar::Colors.for(username)
-          identity.letter = username[0].upcase
+          out = ''
+          username.split(' ').each do |word|
+            out << word.chr.upcase rescue ''
+          end
+
+          identity.letter = out
 
           identity
         end
@@ -40,7 +49,10 @@ module LetterAvatar
         return filename if cache && File.exist?(filename)
 
         fullsize = fullsize_path(identity)
-        generate_fullsize(identity) if !cache || !File.exist?(fullsize)
+        if !cache || !File.exist?(fullsize)
+          generate_fullsize(identity)
+          mask_file(identity) if(LetterAvatar.mask)
+        end
 
         LetterAvatar.resize(fullsize, filename, size, size)
         filename
@@ -77,6 +89,23 @@ module LetterAvatar
 
         filename
       end
+
+      def mask_file(identity)
+        filename = fullsize_path(identity)
+        LetterAvatar.execute(
+            %W(
+            convert
+            '#{filename}'
+            -size #{FULLSIZE}x#{FULLSIZE}
+            '#{MASK_FILENAME}'
+            -alpha Off
+            -compose CopyOpacity
+            -composite '#{filename}'
+          ).join(' ')
+        )
+        filename
+      end
+
 
       def darken(color, pct)
         color.map do |n|

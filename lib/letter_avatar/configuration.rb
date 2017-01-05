@@ -21,7 +21,7 @@ module LetterAvatar
     end
 
     def colors_palette=(v)
-      @colors_palette = v if v.in?(Colors::PALETTES)
+      @colors_palette = v if Colors::PALETTES.include?(v)
     end
 
     def weight
@@ -38,6 +38,14 @@ module LetterAvatar
 
     def annotate_position=(v)
       @annotate_position = v
+    end
+
+    def mask
+      @mask ||= false
+    end
+
+    def mask=(m)
+      @mask = m
     end
   end
 end

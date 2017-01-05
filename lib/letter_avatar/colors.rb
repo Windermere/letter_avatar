@@ -1,5 +1,6 @@
 module LetterAvatar
   module Colors
+    require 'digest'
     PALETTES = [:google, :iwanthue]
 
     GOOGLE_COLORS = [
@@ -256,7 +257,7 @@ module LetterAvatar
 
     def self.with_iwanthue(username)
       iwanthue[
-        Digest::MD5.hexdigest(username)[0...15].to_i(16) % iwanthue.length
+        ::Digest::MD5.hexdigest(username)[0...15].to_i(16) % iwanthue.length
       ]
     end
 
@@ -270,7 +271,7 @@ module LetterAvatar
       elsif /[\d]/ =~ char
         google[char.to_i]
       else
-        google[Digest::MD5.hexdigest(username)[0...15].to_i(16) % google.length]
+        google[::Digest::MD5.hexdigest(username)[0...15].to_i(16) % google.length]
       end
     end
 

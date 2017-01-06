@@ -77,7 +77,7 @@ module LetterAvatar
             convert
             -size #{FULLSIZE}x#{FULLSIZE}
             xc:#{to_rgb(identity.color)}
-            -pointsize 140
+            -pointsize #{LetterAvatar.font_size}
             -font #{FONT_FILENAME}
             -weight #{LetterAvatar.weight}
             -fill '#{LetterAvatar.fill_color}'

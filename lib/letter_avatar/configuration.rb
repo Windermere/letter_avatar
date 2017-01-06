@@ -47,5 +47,13 @@ module LetterAvatar
     def mask=(m)
       @mask = m
     end
+
+    def font_size
+      @font_size ||= 140
+    end
+
+    def font_size(m)
+      @font_size = m
+    end
   end
 end

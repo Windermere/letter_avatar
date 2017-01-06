@@ -52,7 +52,7 @@ module LetterAvatar
       @font_size ||= 140
     end
 
-    def font_size(m)
+    def font_size=(m)
       @font_size = m
     end
   end

@@ -25,14 +25,14 @@ module LetterAvatar
         -gravity center
         -thumbnail #{width}x#{height}^
         -extent #{width}x#{height}
-        -interpolate bicubic
+        -interpolate spline
         -unsharp 2x0.5+0.7+0
         -quality 98
         #{to}
       ).join(' ')
     )
     true
-  rescue
+  rescue => e
     false
   end
 

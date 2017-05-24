@@ -1,3 +1,3 @@
 module LetterAvatar
-  VERSION = '0.3.3-MOXI'
+  VERSION = '0.3.4-MOXI'
 end
